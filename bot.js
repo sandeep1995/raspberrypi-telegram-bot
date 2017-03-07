@@ -1,5 +1,5 @@
 var TelegramBot = require('node-telegram-bot-api');
-var API_KEY = "345930971:AAGyDoSjPd2qBmWwHpI4Cd3Q0iTv3lHVTcI";
+var API_KEY = "<YOUR TELEGRAM API KEY>";
 var exec = require('child_process').exec;
 
 var Gpio = require('onoff').Gpio;
