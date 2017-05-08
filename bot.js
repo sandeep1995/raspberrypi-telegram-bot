@@ -1,5 +1,5 @@
 var TelegramBot = require('node-telegram-bot-api');
-var API_KEY = "<YOUR TELEGRAM API KEY>";
+var API_KEY = "345930971:AAGyDoSjPd2qBmWwHpI4Cd3Q0iTv3lHVTcI";
 var exec = require('child_process').exec;
 
 var Gpio = require('onoff').Gpio;
@@ -26,45 +26,45 @@ var alert = false;
 
 bot.on('message', function(msg) {
     if (msg.chat.id != sandeep) {
-      return bot.sendMessage(msg.chat.id, "Hello " + msg.chat.first_name + ", You are unauthorized");;
+      return bot.sendMessage(msg.chat.id, "Hello " + msg.chat.first_name + ", You are unauthorized! Good Bye!");;
     }
 
     console.log(msg);
     var text = msg.text.toLowerCase();
 
     if (text.includes("hi")) {
-        bot.sendMessage(sandeep, "Hello " + msg.chat.first_name);
-    } else if (text == "/on") {
+        bot.sendMessage(sandeep, "Hello "+msg.chat.first_name+"! Welcome to your Smart Home System. Waiting for your first command. Happy to serve you.");
+    } else if (text == "/lighton") {
         // Turn On Led
         led.writeSync(1);
-        bot.sendMessage(sandeep, "Turned On");
-    } else if (text == "/off") {
+        bot.sendMessage(sandeep, "The Light is turned on");
+    } else if (text == "/lightoff") {
         // Turn Off Led
         led.writeSync(0);
-        bot.sendMessage(sandeep, "Turned Off");
-    } else if (text == "/ison") {
+        bot.sendMessage(sandeep, "The Light is turned off");
+    } else if (text == "/islighton") {
         // Get led status
         var isOn = led.readSync();
-        bot.sendMessage(sandeep, "Led is " + (isOn ? "On" : "Off"));
-    } else if (text == "/temp") {
+        bot.sendMessage(sandeep, "Light is " + (isOn ? "On" : "Off"));
+    } else if (text == "/temperature") {
         var temp = getTemp();
-        bot.sendMessage(sandeep, "Temperature is: " + temp);
+        bot.sendMessage(sandeep, "Current temperature is: " + temp);
     } else if (text == "/humidity") {
         var humidity = getHumidity();
-        bot.sendMessage(sandeep, "Humidity is: " + humidity);
+        bot.sendMessage(sandeep, "Current humidity is: " + humidity);
     } else if (text == "/distance") {
         bot.sendMessage(sandeep, "Current Distance is: " + distance + " cm");
     } else if (text == "/alerton") {
-        bot.sendMessage(sandeep, "Fire and Theif Monitoring started");
+        bot.sendMessage(sandeep, "Fire and Theif Monitoring system started");
         alert = true;
     } else if (text == "/alertoff") {
-        bot.sendMessage(sandeep, "Fire and Theif Monitoring stopped");
+        bot.sendMessage(sandeep, "Fire and Theif Monitoring system stopped");
         alert = false;
     } else if (text == "/photo") {
-        bot.sendMessage(sandeep, "Trying to send a photo");
+        bot.sendMessage(sandeep, "Trying to send a photo. Please wait...");
         captureAndSendImage(sandeep);
     } else {
-        bot.sendMessage(sandeep, "Hi " + msg.chat.first_name + ", You can use /on or /off to control Light. Check Light status by /ison. Get temperature by /temp and humidity by /humidity. Calculate distance by /distance. To turn on the fire and thief notifications please send /alerton and to turn off, send /alertoff");
+        bot.sendMessage(sandeep, "Hi " + msg.chat.first_name + ", You can use the command /lighton or /lightoff to control Light. Check the status of light by /islighton. Get the detected temperature and humidity, give the commands /temperature and /humidity. To start the Fire and Thief Monitoring System please send /alerton and to turn off, send /alertoff");
     }
 });
 
@@ -88,7 +88,7 @@ usonic.init(function(error) {
             var temperature = sensorLib.read().temperature.toFixed(0);
             console.log("Temperature is: " + temperature + " °C");
             if (alert && temperature > 35) {
-                bot.sendMessage(sandeep, "ALERT! High Temperature. May be Fire in the House");
+                bot.sendMessage(sandeep, "ALERT! High Temperature. There may be fire in the house");
 
             }
         }
